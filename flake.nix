@@ -17,8 +17,6 @@
         toolkit = pkgs.buildEnv {
           name = "fleet-toolkit";
           paths = with pkgs; [
-            bash
-            openssh                # ssh/scp/sftp
             coreutils gawk gnused findutils
             curl wget rsync
             jq yq
@@ -40,7 +38,6 @@
       in {
         default = pkgs.mkShell {
           packages = with pkgs; [
-            bashInteractive
             openssh
             coreutils gawk gnused findutils
             curl rsync jq yq
