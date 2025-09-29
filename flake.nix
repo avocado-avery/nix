@@ -19,7 +19,7 @@
             name = "fleet-toolkit";
             paths = with pkgs; [
               coreutils gawk gnused findutils
-              curl wget rsync
+              curl wget rsync git
               jq yq fastfetch
               iproute2 iptables nftables
               nmap masscan
