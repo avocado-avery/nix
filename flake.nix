@@ -12,7 +12,7 @@
       let pkgs = import nixpkgs { inherit system; };
       in {
         install-toolkit = pkgs.buildEnv {
-          name = "install-toolkit";
+          name = "fleet-toolkit";
           paths = with pkgs; [
             coreutils gawk gnused findutils curl wget rsync git
             jq yq fastfetch iproute2 iptables nftables
@@ -24,15 +24,16 @@
         coordinate = pkgs.buildGoModule {
           pname = "coordinate";
           version = "1.0.0";
-          src = pkgs.lib.cleanSource ./coordinate-root;   # <-- lives in this repo
-          go = pkgs.go_1_21;
+          src = pkgs.lib.cleanSource ./coordinate-root;  # <-- lives in this repo
+          go = pkgs.go_1_25;
           postPatch = ''find . -type d -name vendor -prune -exec rm -rf {} +'';
-          vendorHash = "sha256-xNWQNH+rP6YjEM/tU7y08ccRdYKkmGSZ2/b34bhrfCU=";  # your “got:” hash
+          vendorHash = "sha256-xNWQNH+rP6YjEM/tU7y08ccRdYKkmGSZ2/b34bhrfCU="; # your 'got:' hash
           # subPackages = [ "cmd/coordinate" ];
         };
 
         default = self.packages.${system}.install-toolkit;
-      });
+      }
+    );
 
     apps = forAll (system: {
       coordinate = {
