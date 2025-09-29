@@ -19,7 +19,7 @@
           paths = with pkgs; [
             coreutils gawk gnused findutils
             curl wget rsync
-            jq yq
+            jq yq fastfetch
             iproute2 iptables nftables
             nmap masscan
             htop tmux ripgrep fd
