@@ -34,7 +34,7 @@
         coordinate = pkgs.buildGoModule {
           pname = "coordinate";
           version = "1.0.0";
-          src = pkgs.lib.cleanSource ./coordinate-root;
+          src = pkgs.lib.cleanSource ./coordinate;
 
           # Pin a Go version available in nixpkgs. Use go_1_21 (or go_1_22 if you prefer).
           go = pkgs.go_1_25;
