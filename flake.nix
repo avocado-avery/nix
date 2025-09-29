@@ -31,5 +31,5 @@
         default = self.packages.${system}.toolkit;
       }
     );
+  }
 }
-  };
