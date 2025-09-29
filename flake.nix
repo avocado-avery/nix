@@ -11,7 +11,8 @@
     packages = forAll (system:
       let pkgs = import nixpkgs { inherit system; };
       in {
-        install-toolkit = pkgs.buildEnv {
+        # existing toolkit
+        toolkit = pkgs.buildEnv {
           name = "fleet-toolkit";
           paths = with pkgs; [
             coreutils gawk gnused findutils curl wget rsync git
@@ -21,17 +22,29 @@
           ];
         };
 
+        # NEW: coordinate from ./coordinate-root
         coordinate = pkgs.buildGoModule {
           pname = "coordinate";
           version = "1.0.0";
-          src = pkgs.lib.cleanSource ./coordinate-root;  # <-- lives in this repo
+          src = pkgs.lib.cleanSource ./coordinate-root;
+
+          # Go >= 1.21 (pick one that exists in your pinned nixpkgs)
           go = pkgs.go_1_25;
-          postPatch = ''find . -type d -name vendor -prune -exec rm -rf {} +'';
-          vendorHash = "sha256-xNWQNH+rP6YjEM/tU7y08ccRdYKkmGSZ2/b34bhrfCU="; # your 'got:' hash
+
+          # ignore any checked-in vendor/ dir; Nix re-vendors from go.mod/sum
+          postPatch = ''
+            find . -type d -name vendor -prune -exec rm -rf {} +
+          '';
+
+          # Use the vendor hash you observed earlier; if unsure, set null,
+          # build once, copy the "got: sha256-..." into this field, and rebuild.
+          vendorHash = "sha256-xNWQNH+rP6YjEM/tU7y08ccRdYKkmGSZ2/b34bhrfCU=";
+
+          # If your main package is in a subdir, uncomment:
           # subPackages = [ "cmd/coordinate" ];
         };
 
-        default = self.packages.${system}.install-toolkit;
+        default = self.packages.${system}.toolkit;
       }
     );
 
